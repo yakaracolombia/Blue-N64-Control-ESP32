@@ -1,12 +1,9 @@
 
 .devcontainer/
-
 build/
+trace/
+examples/
 
 sdkconfig.defaults
-
 sdkconfig.old
-
 debug.log
-
-trace/
