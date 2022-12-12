@@ -8,3 +8,5 @@ sdkconfig.defaults
 sdkconfig.old
 
 debug.log
+
+trace/

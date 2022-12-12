@@ -2,7 +2,7 @@
     "configurations": [
         {
             "name": "ESP-IDF",
-            "compilerPath": "c:\\Users\\Mitch\\.espressif\\tools\\tools\\xtensa-esp32-elf\\esp-2022r1-11.2.0\\xtensa-esp32-elf\\bin\\xtensa-esp32-elf-gcc.exe",
+            "compilerPath": "D:\\Espressif\\tools\\xtensa-esp32-elf\\esp-2022r1-11.2.0\\xtensa-esp32-elf\\bin\\xtensa-esp32-elf-gcc.exe",
             "cStandard": "c11",
             "cppStandard": "c++17",
             "includePath": [
@@ -10,8 +10,7 @@
                 "${config:idf.espIdfPathWin}/components/**",
                 "${config:idf.espAdfPath}/components/**",
                 "${config:idf.espAdfPathWin}/components/**",
-                "${workspaceFolder}/**",
-                "${workspaceFolder}/../../components/hoja_lib/**"
+                "${workspaceFolder}/**"
             ],
             "browse": {
                 "path": [
@@ -19,8 +18,7 @@
                     "${config:idf.espIdfPathWin}/components",
                     "${config:idf.espAdfPath}/components/**",
                     "${config:idf.espAdfPathWin}/components/**",
-                    "${workspaceFolder}",
-                    "${workspaceFolder}/../../components/hoja_lib/**"
+                    "${workspaceFolder}"
                 ],
                 "limitSymbolsToIncludedHeaders": false
             }
