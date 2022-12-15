@@ -23,7 +23,7 @@ typedef enum
  * @param           ls_x  Left Stick X Data
  * @param           ls_y  Left Stick Y Data
  * @param           rs_x  Left Stick X Data
- * @param           rs_y  Left Stick X Data
+ * @param           rs_y  Left Stick Y Data
  * @param           l_t   Left trigger Analog Data
  * @param           r_t   Right trigger Analog Data
 */

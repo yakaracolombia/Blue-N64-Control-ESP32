@@ -284,7 +284,7 @@ hoja_err_t core_ns_start(void)
     ns_controller_data.battery_level_full = 0x04;
     ns_controller_data.connection_info = 0x00;
 
-    loaded_settings.ns_controller_type = NS_CONTROLLER_TYPE_SNESCLASSIC;
+    loaded_settings.ns_controller_type = NS_CONTROLLER_TYPE_N64CLASSIC;
 
     // SET UP CONTROLLER TYPE VARS
     switch(loaded_settings.ns_controller_type)
@@ -449,10 +449,10 @@ hoja_err_t core_ns_stop()
     }
     ns_ReportModeHandle = NULL;
 
-    esp_bt_hid_device_disconnect();
-    esp_bt_hid_device_unregister_app();
-    esp_bt_hid_device_deinit();
-    esp_bluedroid_disable();
+    ESP_ERROR_CHECK(esp_bt_hid_device_disconnect());
+    ESP_ERROR_CHECK(esp_bt_hid_device_unregister_app());
+    ESP_ERROR_CHECK(esp_bt_hid_device_deinit());
+    //ESP_ERROR_CHECK(esp_bluedroid_disable());
                     
     ESP_LOGI(TAG, "Nintendo Switch Core stopped OK.");
     hoja_event_cb(HOJA_EVT_BT, HOJA_BT_DISCONNECT, 0x00);
