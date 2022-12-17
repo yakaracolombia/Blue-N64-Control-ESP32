@@ -37,7 +37,7 @@ void button_task(hoja_button_data_s *button_data)
 void event_task(hoja_event_type_t type, uint8_t evt, uint8_t param)
 {
     printf("Blue-N64 Control Event: \n\ttype: %d\n\tevent: %d\n\tparam: %d\n", type, evt, param);
-    if (type == HOJA_EVT_BT && evt == HOJA_BT_DISCONNECT)
+    if (type == HOJA_EVT_BT && evt == HEVT_BT_DISCONNECT)
     {
         while (true)
         {
@@ -56,27 +56,71 @@ void event_task(hoja_event_type_t type, uint8_t evt, uint8_t param)
     }
 }
 
+int joystick_x_value = 0;
+int joystick_y_value = 0;
+
+void joystick_interrupt_handler(void *params)
+{
+    switch ((int)params)
+    {
+        default:
+        case JOYSTICK_X_AXIS:
+            if (gpio_get_level(JOYSTICK_X_INT_PIN) == gpio_get_level(JOYSTICK_X_Q_PIN))
+            {
+                joystick_x_value--;
+            }
+            else
+            {
+                joystick_x_value++;
+            }
+
+            //Capping X to -40 <= X <= 40
+            if (joystick_x_value < 0 && joystick_x_value < -JOYSTICK_MAX_X)
+            {
+                joystick_x_value = -JOYSTICK_MAX_X;
+            }
+            else if (joystick_x_value > 0 && joystick_x_value > JOYSTICK_MAX_X)
+            {
+                joystick_x_value = JOYSTICK_MAX_X;   
+            }
+            break;
+        case JOYSTICK_Y_AXIS:
+            if (gpio_get_level(JOYSTICK_Y_INT_PIN) == gpio_get_level(JOYSTICK_Y_Q_PIN))
+            {
+                joystick_y_value--;
+            }
+            else
+            {
+                joystick_y_value++;
+            }
+            
+            //Capping Y to -40 <= Y <= 40
+            if (joystick_y_value < 0 && joystick_y_value < -JOYSTICK_MAX_Y)
+            {
+                joystick_y_value = -JOYSTICK_MAX_Y;
+            }
+            else if (joystick_y_value > 0 && joystick_y_value > JOYSTICK_MAX_Y)
+            {
+                joystick_y_value = JOYSTICK_MAX_Y;   
+            }
+            break;
+    }
+}
+
 // Separate task to read sticks.
 // This is essential to have as a separate component as ADC scans typically take more time and this is only
 // scanned once between each polling interval. This varies from core to core.
 void stick_task(hoja_analog_data_s* analog_data)
 {
-    // read stick 1 and 2
-
-    /*
-    g_stick_data.lsx = (uint16_t) adc1_get_raw(ADC_STICK_LX);
-    g_stick_data.rsx = (uint16_t) adc1_get_raw(ADC_STICK_RX);
-    g_stick_data.rsy = (uint16_t) adc1_get_raw(ADC_STICK_RY);
-    */
-
-    analog_data->ls_x = 2048;
-    analog_data->ls_y = 2048;
+    // Joystick
+    analog_data->ls_x = (joystick_x_value + JOYSTICK_MAX_X) * JOYSTICK_ABS_MAX / JOYSTICK_MAX_X;
+    analog_data->ls_y = (joystick_y_value + JOYSTICK_MAX_Y) * JOYSTICK_ABS_MAX / JOYSTICK_MAX_Y;
 
     // C Buttons
     //   Y (Up/Down)
     if (!gpio_get_level(C_UP_PIN))
     {
-        analog_data->rs_y = 4096;
+        analog_data->rs_y = JOYSTICK_ABS_MAX;
         
     }
     else if (!gpio_get_level(C_DOWN_PIN))
@@ -85,12 +129,12 @@ void stick_task(hoja_analog_data_s* analog_data)
     }
     else
     {
-        analog_data->rs_y = 2048;
+        analog_data->rs_y = JOYSTICK_ABS_MAX / 2;
     }
     //   X (Left/Right)
     if (!gpio_get_level(C_LEFT_PIN))
     {
-        analog_data->rs_x = 4096;
+        analog_data->rs_x = JOYSTICK_ABS_MAX;
         
     }
     else if (!gpio_get_level(C_RIGHT_PIN))
@@ -99,7 +143,7 @@ void stick_task(hoja_analog_data_s* analog_data)
     }
     else
     {
-        analog_data->rs_x = 2048;
+        analog_data->rs_x = JOYSTICK_ABS_MAX / 2;
     }
 
     return;
@@ -125,6 +169,22 @@ void app_main(void)
     io_conf.mode = GPIO_MODE_INPUT;
     io_conf.pull_up_en = GPIO_PULLUP_ENABLE;
     gpio_config(&io_conf);
+
+    io_conf.intr_type = GPIO_INTR_DISABLE;
+    io_conf.pin_bit_mask = JOYSTICK_Q_BIT_MASK;
+    io_conf.mode = GPIO_MODE_INPUT;
+    io_conf.pull_up_en = GPIO_PULLUP_ENABLE;
+    gpio_config(&io_conf);
+
+    io_conf.intr_type = GPIO_INTR_ANYEDGE;
+    io_conf.pin_bit_mask = JOYSTICK_INT_BIT_MASK;
+    io_conf.mode = GPIO_MODE_INPUT;
+    io_conf.pull_up_en = GPIO_PULLUP_ENABLE;
+    gpio_config(&io_conf);
+
+    ESP_ERROR_CHECK(gpio_install_isr_service(0));
+    ESP_ERROR_CHECK(gpio_isr_handler_add(JOYSTICK_X_INT_PIN, joystick_interrupt_handler, (void *)JOYSTICK_X_AXIS));
+    ESP_ERROR_CHECK(gpio_isr_handler_add(JOYSTICK_Y_INT_PIN, joystick_interrupt_handler, (void *)JOYSTICK_Y_AXIS));
 
     hoja_init();
     hoja_set_core(HOJA_CORE_NS);
