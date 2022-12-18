@@ -20,16 +20,18 @@ void button_task(hoja_button_data_s *button_data)
     // Triggers
     button_data->trigger_l          |= !gpio_get_level(TRIGGER_L_PIN);
     button_data->trigger_r          |= !gpio_get_level(TRIGGER_R_PIN);
-    button_data->trigger_zr         |= !gpio_get_level(TRIGGER_Z_PIN);
+    button_data->trigger_zl         |= !gpio_get_level(TRIGGER_Z_PIN);
+
+    // C-Buttons
+    button_data->button_up          |= !gpio_get_level(C_UP_PIN);
+    button_data->button_left        |= !gpio_get_level(C_LEFT_PIN);
+    button_data->trigger_zr         |= !gpio_get_level(C_DOWN_PIN);
+    button_data->button_select      |= !gpio_get_level(C_RIGHT_PIN);
 
     // MISC
     button_data->button_start       |= !gpio_get_level(BUTTON_START_PIN);
 
-    //NC
-    button_data->button_up          = 0;
-    button_data->button_left        = 0;
-    button_data->trigger_zl         = 0;
-    button_data->button_select      = 0;
+    // NC
     button_data->button_stick_left  = 0;
     button_data->button_stick_right = 0;
 }
@@ -115,37 +117,6 @@ void stick_task(hoja_analog_data_s* analog_data)
     // Joystick
     analog_data->ls_x = (joystick_x_value + JOYSTICK_MAX_X) * JOYSTICK_ABS_MAX / JOYSTICK_MAX_X;
     analog_data->ls_y = (joystick_y_value + JOYSTICK_MAX_Y) * JOYSTICK_ABS_MAX / JOYSTICK_MAX_Y;
-
-    // C Buttons
-    //   Y (Up/Down)
-    if (!gpio_get_level(C_UP_PIN))
-    {
-        analog_data->rs_y = JOYSTICK_ABS_MAX;
-        
-    }
-    else if (!gpio_get_level(C_DOWN_PIN))
-    {
-        analog_data->rs_y = 0;
-    }
-    else
-    {
-        analog_data->rs_y = JOYSTICK_ABS_MAX / 2;
-    }
-    //   X (Left/Right)
-    if (!gpio_get_level(C_LEFT_PIN))
-    {
-        analog_data->rs_x = JOYSTICK_ABS_MAX;
-        
-    }
-    else if (!gpio_get_level(C_RIGHT_PIN))
-    {
-        analog_data->rs_x = 0;
-    }
-    else
-    {
-        analog_data->rs_x = JOYSTICK_ABS_MAX / 2;
-    }
-
     return;
 }
 
