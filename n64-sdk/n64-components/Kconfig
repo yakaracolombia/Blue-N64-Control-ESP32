@@ -1,0 +1,19 @@
+menu "N64 SDK Configuration"
+
+config N64_SECONDS_FOR_SWITCH_MODE
+    int "Seconds to switch the mode"
+    range 1 60
+    default 10
+    help
+        Sets seconds that the players has to hold L+R+Start to switch the mode (BlueRetro<->Switch).
+
+config N64_MODE_IDENTIFIER
+    int "Set the current mode Identifier"
+    range 1 2
+    default 1
+    help
+        Sets the current mode identifier.
+        1: Nintendo Switch Mode
+        2: BlueRetro Mode
+                
+endmenu

@@ -139,6 +139,7 @@ void app_loop(void *params)
             if (need_report)
                 bleGamepad.sendReport();
         }
+        n64_handle_buttons();
     }
 }
 

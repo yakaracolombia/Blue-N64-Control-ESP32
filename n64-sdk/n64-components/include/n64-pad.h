@@ -2,7 +2,11 @@
 #define N64_PAD_H
 
 #include "driver/gpio.h"
+#include "esp_ota_ops.h"
+#include "esp_partition.h"
 #include "esp_system.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 // Buttons
 #define BUTTON_A_PIN        GPIO_NUM_27
@@ -51,5 +55,7 @@
 void n64_init(void);
 int n64_get_joystick_x(void);
 int n64_get_joystick_y(void);
+void n64_handle_buttons(void);
+void n64_switch_mode(void);
 
 #endif

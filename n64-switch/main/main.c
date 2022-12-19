@@ -31,6 +31,8 @@ void button_task(hoja_button_data_s *button_data)
     // NC
     button_data->button_stick_left  = 0;
     button_data->button_stick_right = 0;
+
+    n64_handle_buttons();
 }
 
 void event_task(hoja_event_type_t type, uint8_t evt, uint8_t param)
@@ -41,7 +43,7 @@ void event_task(hoja_event_type_t type, uint8_t evt, uint8_t param)
         while (true)
         {
             vTaskDelay(100 / portTICK_PERIOD_MS);
-            if (!gpio_get_level(BUTTON_START_PIN))
+            if (gpio_get_level(TRIGGER_L_PIN) && gpio_get_level(TRIGGER_R_PIN) && !gpio_get_level(BUTTON_START_PIN))
             {
                 while(hoja_start_core() != HOJA_OK)
                 {

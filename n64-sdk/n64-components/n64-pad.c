@@ -86,3 +86,48 @@ int n64_get_joystick_y(void)
 {
     return joystick_y_value;
 }
+
+uint32_t last_tick = 0;
+void n64_handle_buttons(void)
+{
+    if (!gpio_get_level(TRIGGER_L_PIN) && !gpio_get_level(TRIGGER_R_PIN) && !gpio_get_level(BUTTON_START_PIN))
+    {
+        if (last_tick == 0)
+        {
+            last_tick = xTaskGetTickCount();
+        }
+        else if (xTaskGetTickCount() - last_tick >= CONFIG_N64_SECONDS_FOR_SWITCH_MODE * 1000)
+        {
+            last_tick = 0;
+            n64_switch_mode();
+        }
+    }
+    else
+    {
+        last_tick = 0;
+    }
+}
+
+void n64_switch_mode(void)
+{
+    const esp_partition_t *partition = esp_partition_find_first(
+        ESP_PARTITION_TYPE_APP,
+        ESP_PARTITION_SUBTYPE_APP_OTA_MIN + (CONFIG_N64_MODE_IDENTIFIER == 1 ? 2 : 1) - 1,
+        NULL);
+    printf("Switching to OTA 0x%02x\n", ESP_PARTITION_SUBTYPE_APP_OTA_MIN + (CONFIG_N64_MODE_IDENTIFIER == 1 ? 2 : 1) - 1);
+    if (partition != NULL)
+    {
+        esp_err_t err = esp_ota_set_boot_partition(partition);
+        if (err != ESP_OK)
+        {
+            printf("%s: esp_ota_set_boot_partition failed (%d).\n", __func__, err);
+            abort();
+            return;
+        }
+        esp_restart();
+    }
+    else
+    {
+        printf("%s: No partition found for %d.\n", __func__, (CONFIG_N64_MODE_IDENTIFIER == 1 ? 2 : 1));
+    }
+}
