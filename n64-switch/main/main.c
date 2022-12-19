@@ -1,8 +1,5 @@
 #include "main.h"
 
-#define ADC_STICK_X ADC1_CHANNEL_0
-#define ADC_STICK_Y ADC1_CHANNEL_3
-
 void button_task(hoja_button_data_s *button_data)
 {
     // Buttons
@@ -125,11 +122,6 @@ void app_main(void)
     printf("Blue-N64 Control. HEAP=%#010lx\n", esp_get_free_heap_size());
 
     gpio_config_t io_conf = {};
-
-    // Set up ADC
-    ESP_ERROR_CHECK(adc1_config_width(ADC_WIDTH_BIT_DEFAULT));
-    ESP_ERROR_CHECK(adc1_config_channel_atten(ADC_STICK_X, ADC_ATTEN_DB_11));
-    ESP_ERROR_CHECK(adc1_config_channel_atten(ADC_STICK_Y, ADC_ATTEN_DB_11));
 
     hoja_register_button_callback(button_task);
     hoja_register_analog_callback(stick_task);
