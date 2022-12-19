@@ -2,7 +2,6 @@
     "idf.portWin": "COM6",
     "idf.espIdfPathWin": "C:\\Users\\juanp\\esp\\v5.0\\esp-idf",
     "idf.toolsPathWin": "D:\\Espressif",
-    "cmake.sourceDirectory": "${workspaceFolder}/examples/Classic-Plus",
     "idf.adapterTargetName": "esp32",
     "idf.flashType": "UART"
 }
