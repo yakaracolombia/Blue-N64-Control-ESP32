@@ -5,6 +5,17 @@
 		},
 		{
 			"path": "../n64-blueretro"
+		},
+		{
+			"path": "../n64-sdk"
 		}
-	]
+	],
+	"settings":
+	{
+		"idf.portWin": "COM6",
+		"idf.espIdfPathWin": "C:\\Users\\juanp\\esp\\v5.0\\esp-idf",
+		"idf.toolsPathWin": "D:\\Espressif",
+		"idf.adapterTargetName": "esp32",
+		"idf.flashType": "UART"
+	}
 }
