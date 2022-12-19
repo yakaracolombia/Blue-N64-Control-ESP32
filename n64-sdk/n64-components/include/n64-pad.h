@@ -23,9 +23,9 @@
 #define BUTTON_START_PIN    GPIO_NUM_18
 
 // C-Buttons
-#define C_UP_PIN            GPIO_NUM_12
+#define C_UP_PIN            GPIO_NUM_13
 #define C_DOWN_PIN          GPIO_NUM_19
-#define C_LEFT_PIN          GPIO_NUM_13
+#define C_LEFT_PIN          GPIO_NUM_12
 #define C_RIGHT_PIN         GPIO_NUM_5
 
 // Joystick

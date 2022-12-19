@@ -20,8 +20,8 @@ void button_task(hoja_button_data_s *button_data)
     button_data->trigger_zl         |= !gpio_get_level(TRIGGER_Z_PIN);
 
     // C-Buttons
-    button_data->button_up          |= !gpio_get_level(C_UP_PIN);
-    button_data->button_left        |= !gpio_get_level(C_LEFT_PIN);
+    button_data->button_up          |= !gpio_get_level(C_LEFT_PIN);
+    button_data->button_left        |= !gpio_get_level(C_UP_PIN); //WTF Nintendo
     button_data->trigger_zr         |= !gpio_get_level(C_DOWN_PIN);
     button_data->button_select      |= !gpio_get_level(C_RIGHT_PIN);
 
