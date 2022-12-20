@@ -43,6 +43,9 @@
 
 #define JOYSTICK_ABS_MAX    2040
 
+// LEDs
+#define LED_MODE_PIN        GPIO_NUM_16
+
 // Bit Masks
 #define BUTTONS_BIT_MASK        ((1ULL<<BUTTON_A_PIN) | (1ULL<<BUTTON_B_PIN) | (1ULL<<DPAD_UP_PIN) | (1ULL<<DPAD_DOWN_PIN) | (1ULL<<DPAD_LEFT_PIN) | (1ULL<<DPAD_RIGHT_PIN) | (1ULL<<TRIGGER_L_PIN) | (1ULL<<TRIGGER_R_PIN) | (1ULL<<TRIGGER_Z_PIN) | (1ULL<<BUTTON_START_PIN) | (1ULL<<C_UP_PIN) | (1ULL<<C_DOWN_PIN) | (1ULL<<C_LEFT_PIN) | (1ULL<<C_RIGHT_PIN))
 #define JOYSTICK_Q_BIT_MASK     ((1ULL<<JOYSTICK_X_Q_PIN) | (1ULL<<JOYSTICK_Y_Q_PIN))
@@ -51,6 +54,9 @@
 // Flags
 #define JOYSTICK_X_AXIS 0
 #define JOYSTICK_Y_AXIS 1
+
+#define MODE_SWITCH     1
+#define MODE_BLUERETRO  2
 
 void n64_init(void);
 int n64_get_joystick_x(void);

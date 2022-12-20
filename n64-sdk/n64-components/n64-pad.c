@@ -76,6 +76,10 @@ void n64_init(void)
     ESP_ERROR_CHECK(gpio_install_isr_service(0));
     ESP_ERROR_CHECK(gpio_isr_handler_add(JOYSTICK_X_INT_PIN, joystick_interrupt_handler, (void *)JOYSTICK_X_AXIS));
     ESP_ERROR_CHECK(gpio_isr_handler_add(JOYSTICK_Y_INT_PIN, joystick_interrupt_handler, (void *)JOYSTICK_Y_AXIS));
+
+    gpio_reset_pin(LED_MODE_PIN);
+    gpio_set_direction(LED_MODE_PIN, GPIO_MODE_OUTPUT);
+    gpio_set_level(LED_MODE_PIN, CONFIG_N64_MODE_IDENTIFIER == MODE_SWITCH);
 }
 
 int n64_get_joystick_x(void)
