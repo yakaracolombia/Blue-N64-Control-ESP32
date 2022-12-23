@@ -8,9 +8,6 @@
 		},
 		{
 			"path": "../n64-sdk"
-		},
-		{
-			"path": "../webpage"
 		}
 	],
 	"settings":
