@@ -1,6 +1,6 @@
 #include "main.h"
 
-BleGamepad bleGamepad("N64 BlueRetro GamePad", "JPZV");
+BleGamepad bleGamepad("BlueN64 Gamepad", "JPZV");
 BleGamepadConfiguration bleGamepadConfig;
 
 TaskHandle_t loopTaskHandle = NULL;
