@@ -5,7 +5,7 @@ BleGamepadConfiguration bleGamepadConfig;
 
 TaskHandle_t loopTaskHandle = NULL;
 
-#define buttonsLength 8
+#define buttonsLength 9
 
 n64Button buttons[buttonsLength] =
 {
@@ -17,6 +17,7 @@ n64Button buttons[buttonsLength] =
     {C_LEFT_PIN,        BUTTON_4},
     {TRIGGER_Z_PIN,     BUTTON_9},
     {TRIGGER_Z_PIN,     BUTTON_10},
+    {BUTTON_START_PIN,  BUTTON_6},
 };
 n64Button startButton = 
 {
