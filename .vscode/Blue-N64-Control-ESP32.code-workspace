@@ -19,7 +19,9 @@
 		"idf.flashType": "UART",
 		"files.associations": {
 			"task.h": "c",
-			"cmath": "cpp"
+			"cmath": "cpp",
+			"*.tcc": "c",
+			"ostream": "c"
 		}
 	}
 }

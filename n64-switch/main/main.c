@@ -18,15 +18,31 @@ void button_task(hoja_button_data_s *button_data)
     button_data->trigger_l          |= !gpio_get_level(TRIGGER_L_PIN);
     button_data->trigger_r          |= !gpio_get_level(TRIGGER_R_PIN);
     button_data->trigger_zl         |= !gpio_get_level(TRIGGER_Z_PIN);
+    button_data->sb_left            |= !gpio_get_level(TRIGGER_ZR_PIN);
 
     // C-Buttons
     button_data->button_up          |= !gpio_get_level(C_LEFT_PIN);
     button_data->button_left        |= !gpio_get_level(C_UP_PIN); //WTF Nintendo
-    button_data->trigger_zr         |= !gpio_get_level(C_DOWN_PIN);
+    button_data->trigger_zr         |= !gpio_get_level(C_DOWN_PIN); //Seriously, WTF Nintendo
     button_data->button_select      |= !gpio_get_level(C_RIGHT_PIN);
 
     // MISC
-    button_data->button_start       |= !gpio_get_level(BUTTON_START_PIN);
+    button_data->button_home        |= !gpio_get_level(BUTTON_HOME_PIN);
+
+    // Combinations
+    if (!gpio_get_level(BUTTON_START_PIN) && !gpio_get_level(TRIGGER_L_PIN))
+    {
+        button_data->button_home     = 1; //Home
+    }
+    else if (!gpio_get_level(BUTTON_START_PIN) && !gpio_get_level(TRIGGER_R_PIN))
+    {
+        button_data->sb_left         = 1; //ZR
+    }
+    else
+    {
+        //We should only check Start if it's not in a combination
+        button_data->button_start   |= !gpio_get_level(BUTTON_START_PIN);
+    }
 
     // NC
     button_data->button_stick_left  = 0;

@@ -63,6 +63,9 @@ typedef struct
             uint8_t trigger_zl      : 1;
             uint8_t trigger_r       : 1;
             uint8_t trigger_zr      : 1;
+            // Side Buttons
+            uint8_t sb_left       : 1;
+            uint8_t sb_right      : 1;
 
             // Special Functions
             uint8_t button_start    : 1;
